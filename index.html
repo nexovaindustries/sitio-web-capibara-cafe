@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Capibara Café Amigable</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-secondary": "#ffffff",
+          "error": "#ba1a1a",
+          "surface-container-lowest": "#ffffff",
+          "on-tertiary": "#ffffff",
+          "surface-container-low": "#f5f5dc",
+          "on-error": "#ffffff",
+          "error-container": "#ffdad6",
+          "tertiary-container": "#64a868",
+          "surface-bright": "#fbfbe2",
+          "primary-fixed-dim": "#ffb783",
+          "on-tertiary-fixed": "#002107",
+          "primary-fixed": "#ffdcc5",
+          "secondary-fixed": "#ffdad4",
+          "surface-tint": "#944a00",
+          "on-surface": "#1b1d0e",
+          "surface-container": "#efefd7",
+          "on-secondary-fixed": "#2b1613",
+          "outline-variant": "#dcc1b1",
+          "surface-container-highest": "#e4e4cc",
+          "surface": "#fbfbe2",
+          "secondary-container": "#fed7d0",
+          "on-primary": "#ffffff",
+          "primary-container": "#e67e22",
+          "on-primary-fixed": "#301400",
+          "tertiary": "#286b33",
+          "inverse-on-surface": "#f2f2d9",
+          "outline": "#897365",
+          "surface-dim": "#dbdcc3",
+          "on-error-container": "#93000a",
+          "background": "#fbfbe2",
+          "on-primary-fixed-variant": "#713700",
+          "surface-container-high": "#eaead1",
+          "on-tertiary-fixed-variant": "#07521d",
+          "primary": "#944a00",
+          "on-tertiary-container": "#003a11",
+          "secondary-fixed-dim": "#e3beb8",
+          "on-surface-variant": "#564337",
+          "on-secondary-fixed-variant": "#5b403c",
+          "tertiary-fixed": "#abf4ac",
+          "on-secondary-container": "#795c57",
+          "on-background": "#1b1d0e",
+          "surface-variant": "#e4e4cc",
+          "tertiary-fixed-dim": "#90d792",
+          "on-primary-container": "#502600",
+          "inverse-surface": "#303221",
+          "secondary": "#745853",
+          "inverse-primary": "#ffb783"
+        },
+        borderRadius: {
+          DEFAULT: "1rem",
+          lg: "2rem",
+          xl: "3rem",
+          full: "9999px"
+        },
+        fontFamily: {
+          headline: ["Plus Jakarta Sans"],
+          body: ["Plus Jakarta Sans"],
+          label: ["Plus Jakarta Sans"]
+        },
+        scale: {
+          102: "1.02",
+          98: "0.98"
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .glass-header { backdrop-filter: blur(12px); }
+  .ambient-shadow { box-shadow: 0 12px 32px rgba(62,39,35,0.08); }
+
+  /* Mobile menu */
+  #mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(251,251,226,0.97);
+    backdrop-filter: blur(16px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  #mobile-menu.open { display: flex; }
+  #mobile-menu a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #944a00;
+    transition: opacity 0.2s;
+  }
+  #mobile-menu a:hover { opacity: 0.7; }
+  #mobile-menu-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    cursor: pointer;
+    color: #944a00;
+  }
+
+  /* Gallery hover */
+  .gallery-img {
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+    overflow: hidden;
+  }
+  .gallery-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 20px 48px rgba(62,39,35,0.18);
+    z-index: 2;
+    position: relative;
+  }
+
+  /* Nav scroll shadow */
+  .nav-scrolled { box-shadow: 0 4px 24px rgba(62,39,35,0.12); }
+</style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
+
+<!-- Mobile Menu -->
+<div id="mobile-menu">
+  <span class="material-symbols-outlined text-4xl" id="mobile-menu-close">close</span>
+  <a href="#" onclick="closeMobileMenu()">Inicio</a>
+  <a href="#menu" onclick="closeMobileMenu()">Menú</a>
+  <a href="#nosotros" onclick="closeMobileMenu()">Nosotros</a>
+  <a href="#contacto" onclick="closeMobileMenu()">Contacto</a>
+</div>
+
+<!-- TopNavBar -->
+<nav id="main-nav" class="sticky top-0 w-full z-50 bg-stone-50/80 backdrop-blur-xl transition-shadow duration-300">
+  <div class="flex justify-between items-center max-w-7xl mx-auto px-6 md:px-12 h-20">
+    <a href="#" class="flex items-center gap-3">
+      <img alt="Capibara Logo" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uitBCxOl8RKv3Jr_pUr1Y7gXctwIS44jWipdi735MOU9iOW8TidT4Ri9AkLaPMhqgakI9n9K9C5WwcInh5kEaMYiIUjrNFDrybIcSL_-UzxyWAeWQblrBAXAApFvqDA43dFzoo7IjPot4DCb7GJKqw2MOarBpO7ecMrxKXBi-ZsXuLTEwt7WwtkJg_3iEAnOQKmzY5sLCaYFiPxFGU04rDT2_qRSgAi0QsyAYltxjU5x4-NH0Wha8fPUw"/>
+      <span class="text-xl font-extrabold text-orange-900 italic">Capibara Café</span>
+    </a>
+    <div class="hidden md:flex gap-8 text-sm font-semibold">
+      <a class="text-orange-800 font-bold border-b-2 border-orange-400" href="#">Inicio</a>
+      <a class="text-stone-600 hover:text-orange-700 transition-colors duration-200" href="#menu">Menú</a>
+      <a class="text-stone-600 hover:text-orange-700 transition-colors duration-200" href="#nosotros">Nosotros</a>
+      <a class="text-stone-600 hover:text-orange-700 transition-colors duration-200" href="#contacto">Contacto</a>
+    </div>
+    <!-- Hamburger -->
+    <button id="hamburger-btn" class="md:hidden p-2 rounded-lg hover:bg-orange-50 transition-colors" aria-label="Abrir menú" onclick="openMobileMenu()">
+      <span class="material-symbols-outlined text-orange-900 text-3xl">menu</span>
+    </button>
+  </div>
+</nav>
+
+<main class="flex-grow">
+
+  <!-- Hero Section -->
+  <section class="relative w-full min-h-[600px] md:min-h-[800px] flex items-center justify-center py-20 px-4">
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <img alt="Capibara Café ambiente" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ujBD6SUolKD60NhX1ryW7i_i0vPYrg7pMGP1mTkWikAk1rDWiHGeDJlskE6RQs68G7MsyWzfEAkH3QHE8j5MWGFLPfEgGxFlZfo4Ss16CApRYeIJPlblN6sTQFvFV3LCdmFOthBJ8iUARDKUOkFIVDDQudxS0DRAkNgJPB94p5Gc60K9q5VCGANlRoScmji8rgJWzAYVv0B6qECU-wJ5sY_SVEod8o57BGk9oX28hiRV_jfLwoGIc34N34"/>
+      <div class="absolute inset-0 bg-amber-50/60"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto text-center bg-surface-variant/80 backdrop-blur-xl p-8 md:p-12 rounded-2xl ambient-shadow">
+      <h1 class="text-3xl md:text-[3.5rem] font-headline font-extrabold text-primary leading-tight mb-6 tracking-tight">
+        Bienvenidos a Capibara Café Amigable
+      </h1>
+      <p class="text-lg md:text-xl font-body text-on-surface-variant mb-10 max-w-2xl mx-auto">
+        Donde el café es cálido y la compañía es inmejorable
+      </p>
+      <a href="#menu" class="inline-block bg-primary text-on-primary font-bold py-4 px-10 rounded-full hover:scale-105 hover:bg-orange-800 transition-all duration-300 shadow-md">
+        Ver menú
+      </a>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section class="py-16 md:py-24 px-6 md:px-8 max-w-7xl mx-auto" id="menu">
+    <h2 class="text-3xl md:text-4xl font-headline font-bold text-primary text-center mb-12 md:mb-16">Nuestro Menú</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Café -->
+      <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col items-center text-center hover:bg-surface-container-high transition-colors duration-300 ambient-shadow">
+        <img alt="Café de Especialidad" class="w-40 h-40 object-cover rounded-full mb-6 ambient-shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA55bNDsOxR4VUZMppZ06NG4bPGL67xGwM0e8CobGNIwmkhoEf2GuCXDNWmoVl7Ql0CMo8iwx2tK1hlGH-wlZiO321Jbzo0sQVWV9BnRW9s5KRMunqBJ617-wPTMtGuC4SWfIYVBruXqM7YgEJjKmWdJMKHW4X4cq8bO3EMbJi5TDO8dYhpj81gP22w7olRg4QyXv8ieRLdm8UdF4rzH__cWZ1vKOx8SiZnoK1wJbJoGrQuQ4rU2utNtlndYjLeRRv-bd1hZ3kTft8"/>
+        <h3 class="text-xl md:text-2xl font-headline font-bold text-primary mb-4">Café de Especialidad</h3>
+        <p class="font-body text-on-surface-variant mb-6">Granos seleccionados tostados con amor. Desde el clásico espresso hasta nuestro latte capibara signature.</p>
+        <a href="#contacto" class="mt-auto bg-primary text-on-primary font-semibold py-2 px-6 rounded-full text-sm hover:bg-orange-800 transition-colors duration-200">Pedir ahora</a>
+      </div>
+
+      <!-- Postres -->
+      <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col items-center text-center hover:bg-surface-container-high transition-colors duration-300 ambient-shadow md:-translate-y-6">
+        <img alt="Postres Caseros" class="w-40 h-40 object-cover rounded-full mb-6 ambient-shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk_YglhqGR_Hng1kb6-aRgaW91243H1KN8Ygq7YGhKNyJp-vIZ4UrzsuMKfW19PmIVYgSl54pB_6jtybXEH2878voPgUKq2BO_u3AxLlixiTwQQJTQW8mbpYznCebu1pqjI8UQDLcWuQCM6JzWCrsMiPxx0sg1I_QEwvYUvGNfD-fbPxSlasB-x2tRnxEW1sA7978Y89Hbv9yNjNXEzX0Cu7StwxI9B1BNvAoB5C1QmCy9qCDA9gDqJk3bVCDbcoG8TLSiP3RznQw"/>
+        <h3 class="text-xl md:text-2xl font-headline font-bold text-primary mb-4">Postres Caseros</h3>
+        <p class="font-body text-on-surface-variant mb-6">Tartas, galletas y dulces horneados diariamente. El acompañamiento perfecto para tu tarde relajada.</p>
+        <a href="#contacto" class="mt-auto bg-primary text-on-primary font-semibold py-2 px-6 rounded-full text-sm hover:bg-orange-800 transition-colors duration-200">Pedir ahora</a>
+      </div>
+
+      <!-- Bebidas -->
+      <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col items-center text-center hover:bg-surface-container-high transition-colors duration-300 ambient-shadow">
+        <img alt="Bebidas Refrescantes" class="w-40 h-40 object-cover rounded-full mb-6 ambient-shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC69UBcNriaVk6TAhVAM-xv1tdcHjMInV7hW3vgGTTYZRS9pAo0mAberM6pnwBVMewg0C5hK2RZstT91azQ-6BQiFHk2qVEeK0rxIA5GnJn5_tDhy3tc6yz4X0dtsBbVnpSw0cel0ynDjXKI1HF3DgtYPrHFDsvU44d-kdzhGnwaK190MX2VpVuyOOsqayvLPHFNmqd533YtO1VcOdqUH2JXx4gyXgfcHitQa-wPi4Fiza8K2hsf_uqFUr1DSKv0ObDeXVcgmv_mars"/>
+        <h3 class="text-xl md:text-2xl font-headline font-bold text-primary mb-4">Bebidas Refrescantes</h3>
+        <p class="font-body text-on-surface-variant mb-6">Tés fríos, limonadas artesanales y smoothies. Ideal para refrescar tus días soleados.</p>
+        <a href="#contacto" class="mt-auto bg-primary text-on-primary font-semibold py-2 px-6 rounded-full text-sm hover:bg-orange-800 transition-colors duration-200">Pedir ahora</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Sobre Nosotros -->
+  <section class="py-16 md:py-24 px-6 md:px-8 bg-surface-container-low mx-4 lg:mx-auto max-w-7xl rounded-2xl" id="nosotros">
+    <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+      <div class="w-full md:w-1/2">
+        <img alt="Nuestra Historia" class="w-full h-64 md:h-[500px] object-cover rounded-2xl ambient-shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5KtnVP6vYoIvl5YSHpB894tmSbFbN4KmyWOnXLbA0SuNJyZxRXCMtylZHUBR-ABUeUuLgiGAYKndowRoVfLNkXB8WyZ1ccUoOcuEYpGwCovyg6sVkHLa0KpomjQuYEXBq75vXz1Dqp6CDb0XvvqsddWIf-NuvmOFiPWVEcks6T9y4B2wekC4eqGmjDikY3xYOyAYjAZoNIe7kWyGCJBvYy5iHb2iKwXAFSRp-tnLmGH5ljFCFNsh6HyssEFFOrhLA_0IfUWakeag"/>
+      </div>
+      <div class="w-full md:w-1/2">
+        <h2 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Nuestra Historia Amigable</h2>
+        <p class="text-base md:text-lg font-body text-on-surface-variant mb-6 leading-relaxed">
+          Capibara Café nació de la idea de crear un espacio donde el tiempo parece detenerse. Inspirados en la naturaleza relajada de los capibaras, diseñamos cada rincón para ofrecerte paz y buena vibra.
+        </p>
+        <p class="text-base md:text-lg font-body text-on-surface-variant leading-relaxed">
+          Creemos en las conexiones reales, el café honesto y los momentos compartidos. Nuestro oasis urbano está aquí para que te desconectes del bullicio y disfrutes de lo simple.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galería -->
+  <section class="py-16 md:py-24 px-6 md:px-8 max-w-7xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-headline font-bold text-primary text-center mb-12 md:mb-16">Oasis en Imágenes</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <img alt="Capibara leyendo" class="gallery-img w-full h-48 md:h-64 object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-Y7sntcvwDPPdPSlTTxas_Q4eNJFdUc9n0k6fdrnukiF5KclsE_gW7IGR37CdiPa42d6KyuVVKiqbdCEQqrAeaKz0WUHUPIf_5Rbng4RDXLO9aXO-QNnWFccCMRiiSGlY8Uujg1y1zSaJfF17OOCTN5M5RLS1zSHvV_u0g760rLjDPHm-hZ7_6yCFHEOi2LV0Tfdnclzh45HOYv4jCKtAkQmoyNONNKLnyf44xEqJVhnP3I-Js_udQjWNEzCThy3P9gt8NkXdL3Q"/>
+      <img alt="Capibara con plantas" class="gallery-img w-full h-48 md:h-64 object-cover rounded-xl md:translate-y-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkzSL4zMaGs8mO39LWpYO5IK7V_SVJGUEmmJYZkfQ2r6aB4z_AQIIR1HNYZ7IN-yz0Gno61NsXOSWUCkRh1VfFjL2JrPGnO5dw1roiq8yA2i0yJjVHEr-zbOOMzBsx7U23H7GkNBRVA75ObGzm9X9bpMNsWN2M66l6ttOg3FiTHMPnqmzbMstV8qnFWqFQCjt9cowgxiUCaUNhVbZxZGpUzOWL6CdyCFkXcMSqwJtGhLGEPbO2ueMukkDYJiBR-tZsrEp0mlVZEgA"/>
+      <img alt="Capibara con postre" class="gallery-img w-full h-48 md:h-64 object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMDqoLJpItw3wK2CEeKih_wt9m19enMoDMDasuha_BdP20wXNHaHJ3kh89TP7I0u-mkhBXIS3BQZ0Bi0N_Oj8oWJqAZqykALDW_OegKFC0SI3j5Ka5_13O3o7JXALDtV-Hwvn2BK3a-DhA0bvaBisgnSf-u0p0LO95gPYGypabyIF6SKbNFlPG0CRNp6AVOzvuqVaucrC5nxr1yLahUpkQ0LLAoUl8kGeM2eqUB7Auz4G3-067li_JG0Ufmol3lI1qhZWfLb3JUDw"/>
+      <img alt="Capibara en ventana" class="gallery-img w-full h-48 md:h-64 object-cover rounded-xl md:translate-y-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMsna5f2W1LocM11NHIo9FNuNoXI54yczKTgibaVVOYSomOg1zQo8g8AiaC8IpM6PqnYInyTXeQJlShi88Jbq1bUG6p3p9_nb2AIPyDhiYEbbD5hlND3CjhbbbwtvlXs-ec4Xw9b2ENXgrkQmahhm8bqwQjuN1H3u5U_sb8bSOsPDsC6zFtOOzKtEzutD2hvrX_IStCA6giMOEjP98XXDpNb4HMMA0VB33P4KxyOZE8W_CnECk-0WOl1pFqIFT6a6UgEYqHogb2Ks"/>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section class="py-16 md:py-24 px-6 md:px-8 max-w-7xl mx-auto" id="contacto">
+    <div class="bg-surface-container-high rounded-2xl p-8 md:p-12 ambient-shadow flex flex-col lg:flex-row gap-10 md:gap-16">
+      <div class="w-full lg:w-1/2">
+        <h2 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-8">Ven a Visitarnos</h2>
+        <form class="space-y-6" onsubmit="handleSubmit(event)">
+          <div>
+            <label class="block text-sm font-label text-on-surface-variant mb-2" for="nombre">Tu Nombre</label>
+            <input id="nombre" class="w-full bg-surface-container-highest border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/30 outline-none text-on-surface placeholder-on-surface-variant/50 transition" placeholder="¿Cómo te llamas?" type="text" required/>
+          </div>
+          <div>
+            <label class="block text-sm font-label text-on-surface-variant mb-2" for="mensaje">Mensaje</label>
+            <textarea id="mensaje" class="w-full bg-surface-container-highest border-none rounded-lg p-4 h-32 focus:ring-2 focus:ring-primary/30 outline-none text-on-surface placeholder-on-surface-variant/50 transition resize-none" placeholder="Escríbenos algo lindo..." required></textarea>
+          </div>
+          <button class="bg-primary text-on-primary font-bold py-3 px-8 rounded-full hover:bg-orange-800 hover:scale-105 transition-all duration-200 w-full md:w-auto" type="submit">
+            Enviar Mensaje
+          </button>
+          <p id="form-msg" class="text-green-700 font-semibold hidden">¡Mensaje enviado! Te respondemos pronto ☕</p>
+        </form>
+      </div>
+      <div class="w-full lg:w-1/2 min-h-[300px] md:h-96 bg-surface-container-highest rounded-xl overflow-hidden relative">
+        <iframe
+          src="https://www.google.com/maps?q=Buenos+Aires,+Argentina&output=embed"
+          width="100%" height="100%"
+          style="border:0; min-height:300px;"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="w-full h-full absolute inset-0">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="w-full bg-stone-100 rounded-t-3xl mt-16 px-8 md:px-12 py-12">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-sm">
+    <div class="flex items-center gap-3">
+      <img alt="Capibara Logo" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uitBCxOl8RKv3Jr_pUr1Y7gXctwIS44jWipdi735MOU9iOW8TidT4Ri9AkLaPMhqgakI9n9K9C5WwcInh5kEaMYiIUjrNFDrybIcSL_-UzxyWAeWQblrBAXAApFvqDA43dFzoo7IjPot4DCb7GJKqw2MOarBpO7ecMrxKXBi-ZsXuLTEwt7WwtkJg_3iEAnOQKmzY5sLCaYFiPxFGU04rDT2_qRSgAi0QsyAYltxjU5x4-NH0Wha8fPUw"/>
+      <span class="text-lg font-bold text-orange-900">Capibara Café Amigable</span>
+    </div>
+    <p class="text-stone-500">© 2024 Capibara Café Amigable. Siente el relax de la naturaleza.</p>
+    <div class="flex gap-6">
+      <a class="text-stone-500 hover:text-orange-700 hover:underline transition-all duration-200" href="#">Instagram</a>
+      <a class="text-stone-500 hover:text-orange-700 hover:underline transition-all duration-200" href="#">Facebook</a>
+      <a class="text-stone-500 hover:text-orange-700 hover:underline transition-all duration-200" href="#">TikTok</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  function openMobileMenu() {
+    document.getElementById('mobile-menu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('mobile-menu-close').addEventListener('click', closeMobileMenu);
+
+  // Nav shadow on scroll
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('nav-scrolled', window.scrollY > 10);
+  });
+
+  // Contact form
+  function handleSubmit(e) {
+    e.preventDefault();
+    const nombre = document.getElementById('nombre').value.trim();
+    const mensaje = document.getElementById('mensaje').value.trim();
+    if (!nombre || !mensaje) return;
+    const msg = document.getElementById('form-msg');
+    msg.classList.remove('hidden');
+    e.target.reset();
+    setTimeout(() => msg.classList.add('hidden'), 5000);
+  }
+</script>
+
+</body>
+</html>
