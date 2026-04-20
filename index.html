@@ -1,329 +1,945 @@
 <!DOCTYPE html>
-<html class="light" lang="es">
+<html lang="es">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Capibara Café Amigable</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script>
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        colors: {
-          "on-secondary": "#ffffff",
-          "error": "#ba1a1a",
-          "surface-container-lowest": "#ffffff",
-          "on-tertiary": "#ffffff",
-          "surface-container-low": "#f5f5dc",
-          "on-error": "#ffffff",
-          "error-container": "#ffdad6",
-          "tertiary-container": "#64a868",
-          "surface-bright": "#fbfbe2",
-          "primary-fixed-dim": "#ffb783",
-          "on-tertiary-fixed": "#002107",
-          "primary-fixed": "#ffdcc5",
-          "secondary-fixed": "#ffdad4",
-          "surface-tint": "#944a00",
-          "on-surface": "#1b1d0e",
-          "surface-container": "#efefd7",
-          "on-secondary-fixed": "#2b1613",
-          "outline-variant": "#dcc1b1",
-          "surface-container-highest": "#e4e4cc",
-          "surface": "#fbfbe2",
-          "secondary-container": "#fed7d0",
-          "on-primary": "#ffffff",
-          "primary-container": "#e67e22",
-          "on-primary-fixed": "#301400",
-          "tertiary": "#286b33",
-          "inverse-on-surface": "#f2f2d9",
-          "outline": "#897365",
-          "surface-dim": "#dbdcc3",
-          "on-error-container": "#93000a",
-          "background": "#fbfbe2",
-          "on-primary-fixed-variant": "#713700",
-          "surface-container-high": "#eaead1",
-          "on-tertiary-fixed-variant": "#07521d",
-          "primary": "#944a00",
-          "on-tertiary-container": "#003a11",
-          "secondary-fixed-dim": "#e3beb8",
-          "on-surface-variant": "#564337",
-          "on-secondary-fixed-variant": "#5b403c",
-          "tertiary-fixed": "#abf4ac",
-          "on-secondary-container": "#795c57",
-          "on-background": "#1b1d0e",
-          "surface-variant": "#e4e4cc",
-          "tertiary-fixed-dim": "#90d792",
-          "on-primary-container": "#502600",
-          "inverse-surface": "#303221",
-          "secondary": "#745853",
-          "inverse-primary": "#ffb783"
-        },
-        borderRadius: {
-          DEFAULT: "1rem",
-          lg: "2rem",
-          xl: "3rem",
-          full: "9999px"
-        },
-        fontFamily: {
-          headline: ["Plus Jakarta Sans"],
-          body: ["Plus Jakarta Sans"],
-          label: ["Plus Jakarta Sans"]
-        },
-        scale: {
-          102: "1.02",
-          98: "0.98"
-        }
-      }
-    }
-  }
-</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet"/>
 <style>
+  :root {
+    --orange:  #E8732A;
+    --brown:   #3D2B1F;
+    --cream:   #FFF8F0;
+    --latte:   #C49A6C;
+    --green:   #4A7C59;
+    --sand:    #F5E6D3;
+    --lg:      #E8F5EB;
+  }
   html { scroll-behavior: smooth; }
-  body { font-family: 'Plus Jakarta Sans', sans-serif; }
-  .glass-header { backdrop-filter: blur(12px); }
-  .ambient-shadow { box-shadow: 0 12px 32px rgba(62,39,35,0.08); }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--brown); overflow-x: hidden; }
 
-  /* Mobile menu */
+  /* ── STEAM ── */
+  @keyframes steam {
+    0%   { opacity: 0;   transform: translateY(0)   scaleX(1); }
+    30%  { opacity: 0.8; }
+    100% { opacity: 0;   transform: translateY(-28px) scaleX(1.3); }
+  }
+  .s1 { animation: steam 2.4s ease-in-out infinite; }
+  .s2 { animation: steam 2.4s ease-in-out infinite 0.6s; }
+  .s3 { animation: steam 2.4s ease-in-out infinite 1.2s; }
+
+  /* ── FLOAT ── */
+  @keyframes float { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-12px); } }
+  .float { animation: float 4s ease-in-out infinite; }
+
+  /* ── LEAF SWAY ── */
+  @keyframes sway { 0%,100%{ transform: rotate(-6deg); } 50%{ transform: rotate(6deg); } }
+  .sway  { animation: sway 5s ease-in-out infinite; transform-origin: bottom center; }
+  .sway2 { animation: sway 6s ease-in-out infinite 1s; transform-origin: bottom center; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(.16,1,.3,1), transform 0.8s cubic-bezier(.16,1,.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── CARDS ── */
+  .card { transition: transform 0.4s cubic-bezier(.16,1,.3,1), box-shadow 0.4s ease; }
+  .card:hover { transform: translateY(-8px); box-shadow: 0 24px 56px rgba(61,43,31,.15); }
+
+  /* ── ORGANIC SEPARATOR ── */
+  .wave-sep { width: 100%; overflow: hidden; line-height: 0; }
+  .wave-sep svg { display: block; width: 100%; }
+
+  /* ── NAV ── */
+  #nav { transition: box-shadow 0.3s ease, background 0.3s ease; }
+  #nav.scrolled { box-shadow: 0 4px 32px rgba(61,43,31,.10); background: rgba(255,248,240,.96); }
+
+  /* ── MOBILE MENU ── */
   #mobile-menu {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-    background: rgba(251,251,226,0.97);
-    backdrop-filter: blur(16px);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
+    position: fixed; inset: 0; z-index: 60;
+    background: rgba(255,248,240,.98); backdrop-filter: blur(16px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
   }
-  #mobile-menu.open { display: flex; }
-  #mobile-menu a {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #944a00;
-    transition: opacity 0.2s;
-  }
-  #mobile-menu a:hover { opacity: 0.7; }
-  #mobile-menu-close {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    cursor: pointer;
-    color: #944a00;
-  }
+  #mobile-menu.open { opacity: 1; pointer-events: all; }
+  #mobile-menu a { font-size: 1.6rem; font-weight: 800; color: var(--brown); }
+  #mobile-menu a:hover { color: var(--orange); }
 
-  /* Gallery hover */
-  .gallery-img {
-    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
-    overflow: hidden;
-  }
-  .gallery-img:hover {
-    transform: scale(1.03);
-    box-shadow: 0 20px 48px rgba(62,39,35,0.18);
-    z-index: 2;
-    position: relative;
-  }
+  /* ── GALLERY ── */
+  .gal-item { overflow: hidden; border-radius: 1.25rem; }
+  .gal-item img, .gal-item svg { transition: transform 0.5s ease; width: 100%; height: 100%; object-fit: cover; }
+  .gal-item:hover img, .gal-item:hover svg { transform: scale(1.06); }
 
-  /* Nav scroll shadow */
-  .nav-scrolled { box-shadow: 0 4px 24px rgba(62,39,35,0.12); }
+  /* ── MARQUEE ── */
+  .marquee-track { display: flex; width: max-content; animation: marquee 28s linear infinite; }
+  @keyframes marquee { 0%{ transform: translateX(0); } 100%{ transform: translateX(-50%); } }
+
+  /* ── FORM ── */
+  input, textarea { background: var(--sand); border: 2px solid transparent; border-radius: 0.75rem; padding: 0.875rem 1rem; width: 100%; font-family: inherit; font-size: 0.95rem; color: var(--brown); outline: none; transition: border-color 0.2s; }
+  input:focus, textarea:focus { border-color: var(--orange); }
+  input::placeholder, textarea::placeholder { color: #b09080; }
+  textarea { resize: none; }
+
+  /* ── PAWS ── */
+  .paw { opacity: 0.12; }
 </style>
 </head>
+<body>
 
-<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col">
-
-<!-- Mobile Menu -->
+<!-- ══ MOBILE MENU ══ -->
 <div id="mobile-menu">
-  <span class="material-symbols-outlined text-4xl" id="mobile-menu-close">close</span>
-  <a href="#" onclick="closeMobileMenu()">Inicio</a>
-  <a href="#menu" onclick="closeMobileMenu()">Menú</a>
-  <a href="#nosotros" onclick="closeMobileMenu()">Nosotros</a>
-  <a href="#contacto" onclick="closeMobileMenu()">Contacto</a>
+  <button id="close-btn" style="position:absolute;top:1.5rem;right:1.5rem;font-size:2rem;color:var(--brown);background:none;border:none;cursor:pointer;">✕</button>
+  <a href="#"        onclick="toggleMenu()">Inicio</a>
+  <a href="#menu"    onclick="toggleMenu()">Menú</a>
+  <a href="#about"   onclick="toggleMenu()">Nosotros</a>
+  <a href="#gallery" onclick="toggleMenu()">Galería</a>
+  <a href="#contact" onclick="toggleMenu()">Contacto</a>
 </div>
 
-<!-- TopNavBar -->
-<nav id="main-nav" class="sticky top-0 w-full z-50 bg-stone-50/80 backdrop-blur-xl transition-shadow duration-300">
-  <div class="flex justify-between items-center max-w-7xl mx-auto px-6 md:px-12 h-20">
-    <a href="#" class="flex items-center gap-3">
-      <img alt="Capibara Logo" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uitBCxOl8RKv3Jr_pUr1Y7gXctwIS44jWipdi735MOU9iOW8TidT4Ri9AkLaPMhqgakI9n9K9C5WwcInh5kEaMYiIUjrNFDrybIcSL_-UzxyWAeWQblrBAXAApFvqDA43dFzoo7IjPot4DCb7GJKqw2MOarBpO7ecMrxKXBi-ZsXuLTEwt7WwtkJg_3iEAnOQKmzY5sLCaYFiPxFGU04rDT2_qRSgAi0QsyAYltxjU5x4-NH0Wha8fPUw"/>
-      <span class="text-xl font-extrabold text-orange-900 italic">Capibara Café</span>
+<!-- ══ NAV ══ -->
+<nav id="nav" class="sticky top-0 z-50 w-full" style="background:rgba(255,248,240,.85);backdrop-filter:blur(16px);">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-10 h-20">
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3 group">
+      <!-- Capybara Logo SVG -->
+      <svg width="52" height="44" viewBox="0 0 130 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Steam above cup -->
+        <path class="s1" d="M22 52 Q18 43 22 35 Q26 27 22 18" stroke="#E8732A" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+        <path class="s2" d="M30 52 Q26 43 30 35 Q34 27 30 18" stroke="#E8732A" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+        <!-- Cup -->
+        <rect x="10" y="54" width="34" height="24" rx="5" fill="#E8732A"/>
+        <rect x="8"  y="50" width="38" height="8"  rx="4" fill="#C85A10"/>
+        <path d="M44 58 Q55 58 55 67 Q55 76 44 76" stroke="#C85A10" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <!-- Body -->
+        <ellipse cx="82" cy="68" rx="42" ry="26" fill="#3D2B1F"/>
+        <!-- Rear leg -->
+        <rect x="48" y="82" width="16" height="14" rx="7" fill="#3D2B1F"/>
+        <!-- Front paw (holding cup) -->
+        <path d="M58 70 Q50 68 44 72" stroke="#3D2B1F" stroke-width="9" stroke-linecap="round" fill="none"/>
+        <!-- Head -->
+        <rect x="96" y="36" width="56" height="46" rx="18" fill="#3D2B1F"/>
+        <!-- Ear -->
+        <ellipse cx="112" cy="30" rx="10" ry="7" fill="#3D2B1F"/>
+        <!-- Eye -->
+        <circle cx="136" cy="52" r="5" fill="white"/>
+        <circle cx="137" cy="53" r="2.5" fill="#1a0a00"/>
+        <circle cx="138" cy="51" r="1.2" fill="white"/>
+        <!-- Muzzle -->
+        <rect x="144" y="56" width="20" height="14" rx="7" fill="#5B3A2A"/>
+        <circle cx="149" cy="62" r="2" fill="#1a0a00"/>
+        <circle cx="157" cy="62" r="2" fill="#1a0a00"/>
+        <!-- Tail -->
+        <ellipse cx="42" cy="68" rx="7" ry="5" fill="#3D2B1F" transform="rotate(-15 42 68)"/>
+      </svg>
+      <div>
+        <div class="font-extrabold italic leading-tight" style="font-size:1.2rem;color:var(--brown);">Capibara</div>
+        <div class="font-semibold leading-tight" style="font-size:0.65rem;color:var(--orange);letter-spacing:0.12em;text-transform:uppercase;">Café Amigable</div>
+      </div>
     </a>
-    <div class="hidden md:flex gap-8 text-sm font-semibold">
-      <a class="text-orange-800 font-bold border-b-2 border-orange-400" href="#">Inicio</a>
-      <a class="text-stone-600 hover:text-orange-700 transition-colors duration-200" href="#menu">Menú</a>
-      <a class="text-stone-600 hover:text-orange-700 transition-colors duration-200" href="#nosotros">Nosotros</a>
-      <a class="text-stone-600 hover:text-orange-700 transition-colors duration-200" href="#contacto">Contacto</a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8 font-semibold text-sm">
+      <a href="#"        class="transition-colors hover:text-orange-600" style="color:var(--orange);">Inicio</a>
+      <a href="#menu"    class="transition-colors hover:text-orange-600" style="color:var(--brown);">Menú</a>
+      <a href="#about"   class="transition-colors hover:text-orange-600" style="color:var(--brown);">Nosotros</a>
+      <a href="#gallery" class="transition-colors hover:text-orange-600" style="color:var(--brown);">Galería</a>
+      <a href="#contact" class="inline-block font-bold text-white px-6 py-2.5 rounded-full transition-all hover:scale-105 hover:opacity-90" style="background:var(--orange);">Contacto</a>
     </div>
+
     <!-- Hamburger -->
-    <button id="hamburger-btn" class="md:hidden p-2 rounded-lg hover:bg-orange-50 transition-colors" aria-label="Abrir menú" onclick="openMobileMenu()">
-      <span class="material-symbols-outlined text-orange-900 text-3xl">menu</span>
+    <button onclick="toggleMenu()" class="md:hidden p-2 rounded-lg" style="color:var(--brown);">
+      <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="4" y1="8"  x2="24" y2="8"/>
+        <line x1="4" y1="14" x2="24" y2="14"/>
+        <line x1="4" y1="20" x2="24" y2="20"/>
+      </svg>
     </button>
   </div>
 </nav>
 
-<main class="flex-grow">
 
-  <!-- Hero Section -->
-  <section class="relative w-full min-h-[600px] md:min-h-[800px] flex items-center justify-center py-20 px-4">
-    <div class="absolute inset-0 z-0 overflow-hidden">
-      <img alt="Capibara Café ambiente" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ujBD6SUolKD60NhX1ryW7i_i0vPYrg7pMGP1mTkWikAk1rDWiHGeDJlskE6RQs68G7MsyWzfEAkH3QHE8j5MWGFLPfEgGxFlZfo4Ss16CApRYeIJPlblN6sTQFvFV3LCdmFOthBJ8iUARDKUOkFIVDDQudxS0DRAkNgJPB94p5Gc60K9q5VCGANlRoScmji8rgJWzAYVv0B6qECU-wJ5sY_SVEod8o57BGk9oX28hiRV_jfLwoGIc34N34"/>
-      <div class="absolute inset-0 bg-amber-50/60"></div>
-    </div>
-    <div class="relative z-10 max-w-3xl mx-auto text-center bg-surface-variant/80 backdrop-blur-xl p-8 md:p-12 rounded-2xl ambient-shadow">
-      <h1 class="text-3xl md:text-[3.5rem] font-headline font-extrabold text-primary leading-tight mb-6 tracking-tight">
-        Bienvenidos a Capibara Café Amigable
+<!-- ══ HERO ══ -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background:linear-gradient(160deg,#FFF8F0 0%,#F5E6D3 60%,#E8F5EB 100%);">
+
+  <!-- Decorative circles -->
+  <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(232,115,42,.06);top:-100px;right:-100px;"></div>
+  <div style="position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(74,124,89,.07);bottom:-60px;left:-60px;"></div>
+
+  <!-- Paw prints decoration -->
+  <svg style="position:absolute;top:15%;left:5%;opacity:.08;" width="60" height="60" viewBox="0 0 60 60" fill="var(--brown)">
+    <ellipse cx="30" cy="38" rx="14" ry="11"/>
+    <ellipse cx="12" cy="24" rx="7" ry="5" transform="rotate(-20 12 24)"/>
+    <ellipse cx="48" cy="24" rx="7" ry="5" transform="rotate(20 48 24)"/>
+    <ellipse cx="20" cy="14" rx="5" ry="4" transform="rotate(-10 20 14)"/>
+    <ellipse cx="40" cy="14" rx="5" ry="4" transform="rotate(10 40 14)"/>
+  </svg>
+  <svg style="position:absolute;bottom:20%;right:6%;opacity:.07;" width="50" height="50" viewBox="0 0 60 60" fill="var(--brown)">
+    <ellipse cx="30" cy="38" rx="14" ry="11"/>
+    <ellipse cx="12" cy="24" rx="7" ry="5" transform="rotate(-20 12 24)"/>
+    <ellipse cx="48" cy="24" rx="7" ry="5" transform="rotate(20 48 24)"/>
+    <ellipse cx="20" cy="14" rx="5" ry="4"/>
+    <ellipse cx="40" cy="14" rx="5" ry="4"/>
+  </svg>
+
+  <!-- Leaves -->
+  <svg class="sway"  style="position:absolute;bottom:60px;left:40px;"  width="80"  height="120" viewBox="0 0 80 120" fill="none">
+    <path d="M40 120 Q10 80 20 30 Q30 0 40 10 Q50 0 60 30 Q70 80 40 120Z" fill="#4A7C59" opacity=".7"/>
+    <line x1="40" y1="10" x2="40" y2="120" stroke="#3a6448" stroke-width="2"/>
+  </svg>
+  <svg class="sway2" style="position:absolute;bottom:40px;left:80px;"  width="55"  height="90"  viewBox="0 0 80 120" fill="none">
+    <path d="M40 120 Q10 80 20 30 Q30 0 40 10 Q50 0 60 30 Q70 80 40 120Z" fill="#5B8A5F" opacity=".5"/>
+  </svg>
+  <svg class="sway"  style="position:absolute;bottom:50px;right:50px;" width="70"  height="110" viewBox="0 0 80 120" fill="none">
+    <path d="M40 120 Q10 80 20 30 Q30 0 40 10 Q50 0 60 30 Q70 80 40 120Z" fill="#4A7C59" opacity=".6"/>
+    <line x1="40" y1="10" x2="40" y2="120" stroke="#3a6448" stroke-width="2"/>
+  </svg>
+  <svg class="sway2" style="position:absolute;top:80px;right:80px;"    width="45"  height="75"  viewBox="0 0 80 120" fill="none">
+    <path d="M40 120 Q10 80 20 30 Q30 0 40 10 Q50 0 60 30 Q70 80 40 120Z" fill="#5B8A5F" opacity=".4"/>
+  </svg>
+
+  <!-- Main content -->
+  <div class="relative z-10 max-w-6xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center gap-12 md:gap-20">
+
+    <!-- Text -->
+    <div class="flex-1 text-center md:text-left">
+      <div class="reveal inline-block font-semibold text-sm px-4 py-1.5 rounded-full mb-6" style="background:rgba(232,115,42,.12);color:var(--orange);">☕ Abiertos todos los días · 8am — 8pm</div>
+      <h1 class="reveal font-extrabold leading-tight mb-6" style="font-size:clamp(2.2rem,6vw,4rem);color:var(--brown);transition-delay:.1s;">
+        Tu lugar favorito<br/>para un <span style="color:var(--orange);font-style:italic;">café</span> con alma
       </h1>
-      <p class="text-lg md:text-xl font-body text-on-surface-variant mb-10 max-w-2xl mx-auto">
-        Donde el café es cálido y la compañía es inmejorable
+      <p class="reveal font-medium text-lg mb-10 leading-relaxed max-w-lg" style="color:#6B4F3A;transition-delay:.2s;">
+        Donde el café es cálido, la compañía inmejorable y cada rincón huele a tranquilidad. Inspirados en la serenidad del capibara.
       </p>
-      <a href="#menu" class="inline-block bg-primary text-on-primary font-bold py-4 px-10 rounded-full hover:scale-105 hover:bg-orange-800 transition-all duration-300 shadow-md">
-        Ver menú
-      </a>
+      <div class="reveal flex flex-wrap gap-4 justify-center md:justify-start" style="transition-delay:.3s;">
+        <a href="#menu" class="font-bold px-8 py-4 rounded-full text-white shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300" style="background:var(--orange);">
+          Ver menú
+        </a>
+        <a href="#about" class="font-bold px-8 py-4 rounded-full border-2 hover:scale-105 transition-all duration-300" style="border-color:var(--brown);color:var(--brown);">
+          Nuestra historia
+        </a>
+      </div>
     </div>
-  </section>
 
-  <!-- Menu Section -->
-  <section class="py-16 md:py-24 px-6 md:px-8 max-w-7xl mx-auto" id="menu">
-    <h2 class="text-3xl md:text-4xl font-headline font-bold text-primary text-center mb-12 md:mb-16">Nuestro Menú</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Hero Capybara Illustration -->
+    <div class="flex-1 flex items-center justify-center">
+      <div class="float relative">
+        <svg width="100%" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width:380px;filter:drop-shadow(0 20px 40px rgba(61,43,31,.15));">
 
-      <!-- Café -->
-      <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col items-center text-center hover:bg-surface-container-high transition-colors duration-300 ambient-shadow">
-        <img alt="Café de Especialidad" class="w-40 h-40 object-cover rounded-full mb-6 ambient-shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA55bNDsOxR4VUZMppZ06NG4bPGL67xGwM0e8CobGNIwmkhoEf2GuCXDNWmoVl7Ql0CMo8iwx2tK1hlGH-wlZiO321Jbzo0sQVWV9BnRW9s5KRMunqBJ617-wPTMtGuC4SWfIYVBruXqM7YgEJjKmWdJMKHW4X4cq8bO3EMbJi5TDO8dYhpj81gP22w7olRg4QyXv8ieRLdm8UdF4rzH__cWZ1vKOx8SiZnoK1wJbJoGrQuQ4rU2utNtlndYjLeRRv-bd1hZ3kTft8"/>
-        <h3 class="text-xl md:text-2xl font-headline font-bold text-primary mb-4">Café de Especialidad</h3>
-        <p class="font-body text-on-surface-variant mb-6">Granos seleccionados tostados con amor. Desde el clásico espresso hasta nuestro latte capibara signature.</p>
-        <a href="#contacto" class="mt-auto bg-primary text-on-primary font-semibold py-2 px-6 rounded-full text-sm hover:bg-orange-800 transition-colors duration-200">Pedir ahora</a>
+          <!-- Café table -->
+          <ellipse cx="160" cy="245" rx="100" ry="14" fill="#C49A6C" opacity=".4"/>
+          <rect x="110" y="238" width="100" height="10" rx="5" fill="#C49A6C" opacity=".5"/>
+
+          <!-- Plant pot left -->
+          <rect x="24" y="195" width="28" height="22" rx="5" fill="#C49A6C"/>
+          <ellipse cx="38" cy="195" rx="16" ry="6" fill="#B08050"/>
+          <path d="M38 195 Q28 170 18 155 Q30 165 38 155 Q46 165 58 155 Q48 170 38 195Z" fill="#4A7C59"/>
+          <path d="M38 195 Q25 175 22 162" stroke="#3a6448" stroke-width="1.5" fill="none"/>
+
+          <!-- Plant pot right -->
+          <rect x="268" y="200" width="24" height="18" rx="4" fill="#C49A6C"/>
+          <ellipse cx="280" cy="200" rx="13" ry="5" fill="#B08050"/>
+          <path d="M280 200 Q268 178 258 165 Q268 175 280 165 Q292 175 302 165 Q292 178 280 200Z" fill="#5B8A5F"/>
+
+          <!-- Steam 1 (large cup) -->
+          <path class="s1" d="M88 148 Q82 132 88 118 Q94 104 88 90"  stroke="#E8732A" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path class="s2" d="M100 150 Q94 134 100 120 Q106 106 100 92" stroke="#E8732A" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path class="s3" d="M112 148 Q106 132 112 118 Q118 104 112 90" stroke="#E8732A" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+          <!-- Large coffee cup -->
+          <rect x="68" y="152" width="68" height="52" rx="10" fill="#E8732A"/>
+          <rect x="64" y="146" width="76" height="14" rx="7" fill="#C85A10"/>
+          <path d="M136 160 Q155 160 155 175 Q155 190 136 190" stroke="#C85A10" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <!-- Latte art -->
+          <path d="M82 172 Q90 165 102 172 Q110 179 118 172" stroke="rgba(255,255,255,.4)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="102" cy="175" rx="14" ry="8" fill="rgba(255,255,255,.12)"/>
+
+          <!-- Capybara body -->
+          <ellipse cx="190" cy="195" rx="90" ry="52" fill="#3D2B1F"/>
+
+          <!-- Back legs -->
+          <rect x="116" y="228" width="28" height="20" rx="10" fill="#3D2B1F"/>
+          <rect x="156" y="232" width="24" height="16" rx="8"  fill="#3D2B1F"/>
+
+          <!-- Front paw on cup -->
+          <path d="M148 195 Q138 185 126 190 Q118 195 118 202" stroke="#3D2B1F" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+          <!-- Head -->
+          <rect x="228" y="126" width="82" height="72" rx="28" fill="#3D2B1F"/>
+
+          <!-- Ear -->
+          <ellipse cx="248" cy="116" rx="16" ry="11" fill="#3D2B1F"/>
+          <ellipse cx="248" cy="117" rx="9"  ry="6"  fill="#5B3A2A"/>
+
+          <!-- Eye -->
+          <circle cx="291" cy="148" r="9"   fill="white"/>
+          <circle cx="293" cy="150" r="4.5" fill="#1a0a00"/>
+          <circle cx="295" cy="147" r="2"   fill="white"/>
+
+          <!-- Eyelashes (cute) -->
+          <path d="M286 140 Q284 136 282 133" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M291 138 Q290 134 290 130" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M296 140 Q298 136 300 133" stroke="#3D2B1F" stroke-width="1.5" stroke-linecap="round"/>
+
+          <!-- Muzzle -->
+          <rect x="298" y="154" width="28" height="22" rx="11" fill="#5B3A2A"/>
+          <circle cx="306" cy="164" r="3"  fill="#1a0a00"/>
+          <circle cx="318" cy="164" r="3"  fill="#1a0a00"/>
+          <!-- Smile -->
+          <path d="M306 170 Q312 175 318 170" stroke="#1a0a00" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+          <!-- Neck fluff -->
+          <ellipse cx="240" cy="196" rx="20" ry="12" fill="#4A3020"/>
+
+          <!-- Tail -->
+          <ellipse cx="104" cy="192" rx="12" ry="8" fill="#3D2B1F" transform="rotate(-20 104 192)"/>
+
+          <!-- Saucer -->
+          <ellipse cx="102" cy="207" rx="42" ry="8" fill="#B08050" opacity=".5"/>
+
+          <!-- Decorative dots -->
+          <circle cx="50"  cy="130" r="5" fill="#E8732A" opacity=".3"/>
+          <circle cx="42"  cy="115" r="3" fill="#E8732A" opacity=".2"/>
+          <circle cx="270" cy="110" r="4" fill="#4A7C59" opacity=".3"/>
+          <circle cx="282" cy="98"  r="2.5" fill="#4A7C59" opacity=".2"/>
+        </svg>
       </div>
-
-      <!-- Postres -->
-      <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col items-center text-center hover:bg-surface-container-high transition-colors duration-300 ambient-shadow md:-translate-y-6">
-        <img alt="Postres Caseros" class="w-40 h-40 object-cover rounded-full mb-6 ambient-shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk_YglhqGR_Hng1kb6-aRgaW91243H1KN8Ygq7YGhKNyJp-vIZ4UrzsuMKfW19PmIVYgSl54pB_6jtybXEH2878voPgUKq2BO_u3AxLlixiTwQQJTQW8mbpYznCebu1pqjI8UQDLcWuQCM6JzWCrsMiPxx0sg1I_QEwvYUvGNfD-fbPxSlasB-x2tRnxEW1sA7978Y89Hbv9yNjNXEzX0Cu7StwxI9B1BNvAoB5C1QmCy9qCDA9gDqJk3bVCDbcoG8TLSiP3RznQw"/>
-        <h3 class="text-xl md:text-2xl font-headline font-bold text-primary mb-4">Postres Caseros</h3>
-        <p class="font-body text-on-surface-variant mb-6">Tartas, galletas y dulces horneados diariamente. El acompañamiento perfecto para tu tarde relajada.</p>
-        <a href="#contacto" class="mt-auto bg-primary text-on-primary font-semibold py-2 px-6 rounded-full text-sm hover:bg-orange-800 transition-colors duration-200">Pedir ahora</a>
-      </div>
-
-      <!-- Bebidas -->
-      <div class="bg-surface-container-low rounded-2xl p-8 flex flex-col items-center text-center hover:bg-surface-container-high transition-colors duration-300 ambient-shadow">
-        <img alt="Bebidas Refrescantes" class="w-40 h-40 object-cover rounded-full mb-6 ambient-shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC69UBcNriaVk6TAhVAM-xv1tdcHjMInV7hW3vgGTTYZRS9pAo0mAberM6pnwBVMewg0C5hK2RZstT91azQ-6BQiFHk2qVEeK0rxIA5GnJn5_tDhy3tc6yz4X0dtsBbVnpSw0cel0ynDjXKI1HF3DgtYPrHFDsvU44d-kdzhGnwaK190MX2VpVuyOOsqayvLPHFNmqd533YtO1VcOdqUH2JXx4gyXgfcHitQa-wPi4Fiza8K2hsf_uqFUr1DSKv0ObDeXVcgmv_mars"/>
-        <h3 class="text-xl md:text-2xl font-headline font-bold text-primary mb-4">Bebidas Refrescantes</h3>
-        <p class="font-body text-on-surface-variant mb-6">Tés fríos, limonadas artesanales y smoothies. Ideal para refrescar tus días soleados.</p>
-        <a href="#contacto" class="mt-auto bg-primary text-on-primary font-semibold py-2 px-6 rounded-full text-sm hover:bg-orange-800 transition-colors duration-200">Pedir ahora</a>
-      </div>
-
     </div>
-  </section>
+  </div>
 
-  <!-- Sobre Nosotros -->
-  <section class="py-16 md:py-24 px-6 md:px-8 bg-surface-container-low mx-4 lg:mx-auto max-w-7xl rounded-2xl" id="nosotros">
-    <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-      <div class="w-full md:w-1/2">
-        <img alt="Nuestra Historia" class="w-full h-64 md:h-[500px] object-cover rounded-2xl ambient-shadow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5KtnVP6vYoIvl5YSHpB894tmSbFbN4KmyWOnXLbA0SuNJyZxRXCMtylZHUBR-ABUeUuLgiGAYKndowRoVfLNkXB8WyZ1ccUoOcuEYpGwCovyg6sVkHLa0KpomjQuYEXBq75vXz1Dqp6CDb0XvvqsddWIf-NuvmOFiPWVEcks6T9y4B2wekC4eqGmjDikY3xYOyAYjAZoNIe7kWyGCJBvYy5iHb2iKwXAFSRp-tnLmGH5ljFCFNsh6HyssEFFOrhLA_0IfUWakeag"/>
+  <!-- Wave bottom -->
+  <div class="wave-sep absolute bottom-0 left-0 w-full">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="var(--cream)" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ══ MARQUEE ══ -->
+<div style="background:var(--brown);padding:14px 0;overflow:hidden;">
+  <div class="marquee-track" style="color:rgba(255,248,240,.5);font-weight:700;font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;">
+    <span style="padding:0 2.5rem;">☕ Café de Especialidad</span>
+    <span style="padding:0 2.5rem;">🌿 100% Natural</span>
+    <span style="padding:0 2.5rem;">🐹 Ambiente Tranquilo</span>
+    <span style="padding:0 2.5rem;">🍰 Postres Caseros</span>
+    <span style="padding:0 2.5rem;">🌿 Plantas & Relax</span>
+    <span style="padding:0 2.5rem;">☕ Café de Especialidad</span>
+    <span style="padding:0 2.5rem;">🌿 100% Natural</span>
+    <span style="padding:0 2.5rem;">🐹 Ambiente Tranquilo</span>
+    <span style="padding:0 2.5rem;">🍰 Postres Caseros</span>
+    <span style="padding:0 2.5rem;">🌿 Plantas & Relax</span>
+  </div>
+</div>
+
+
+<!-- ══ MENU ══ -->
+<section id="menu" class="py-24 px-6 md:px-10 max-w-7xl mx-auto">
+  <div class="text-center mb-16 reveal">
+    <span class="inline-block font-semibold text-sm px-4 py-1.5 rounded-full mb-4" style="background:rgba(232,115,42,.12);color:var(--orange);">Nuestro Menú</span>
+    <h2 class="font-extrabold" style="font-size:clamp(2rem,5vw,3rem);color:var(--brown);">Sabores con <span style="color:var(--orange);">carácter</span></h2>
+    <p class="mt-4 font-medium" style="color:#6B4F3A;max-width:500px;margin:1rem auto 0;">Cada producto hecho con amor, ingredientes frescos y mucha buena vibra capibara.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <!-- Card 1: Café -->
+    <div class="card reveal rounded-3xl overflow-hidden" style="background:var(--sand);transition-delay:.05s;">
+      <div class="flex items-center justify-center py-10" style="background:rgba(232,115,42,.08);">
+        <svg width="160" height="150" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Counter top -->
+          <rect x="20" y="130" width="160" height="14" rx="7" fill="#C49A6C"/>
+          <!-- Machine -->
+          <rect x="60" y="80" width="80" height="55" rx="8" fill="#5B3A2A"/>
+          <rect x="68" y="88" width="28" height="20" rx="4" fill="#E8732A" opacity=".8"/>
+          <circle cx="116" cy="100" r="10" fill="#3D2B1F"/>
+          <circle cx="116" cy="100" r="6"  fill="#E8732A" opacity=".5"/>
+          <rect x="74" y="115" width="16" height="4" rx="2" fill="#E8732A" opacity=".6"/>
+          <!-- Cup under machine -->
+          <rect x="86" y="120" width="28" height="18" rx="4" fill="white" opacity=".9"/>
+          <rect x="84" y="117" width="32" height="6"  rx="3" fill="#ddd"/>
+          <!-- Steam -->
+          <path class="s1" d="M95 117 Q91 108 95 100 Q99 92 95 84"  stroke="#E8732A" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path class="s2" d="M102 117 Q98 108 102 100 Q106 92 102 84" stroke="#E8732A" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <!-- Capybara barista body -->
+          <ellipse cx="42" cy="115" rx="28" ry="18" fill="#3D2B1F"/>
+          <!-- Head -->
+          <rect x="28" y="82" width="44" height="36" rx="16" fill="#3D2B1F"/>
+          <!-- Ear -->
+          <ellipse cx="38" cy="77" rx="9" ry="6" fill="#3D2B1F"/>
+          <!-- Eye -->
+          <circle cx="60" cy="95"  r="6"   fill="white"/>
+          <circle cx="61" cy="96"  r="3"   fill="#1a0a00"/>
+          <circle cx="62" cy="94"  r="1.2" fill="white"/>
+          <!-- Muzzle -->
+          <rect x="62" y="102" width="18" height="12" rx="6" fill="#5B3A2A"/>
+          <circle cx="67" cy="107" r="1.8" fill="#1a0a00"/>
+          <circle cx="74" cy="107" r="1.8" fill="#1a0a00"/>
+          <!-- Chef hat -->
+          <rect x="30" y="65" width="40" height="20" rx="4" fill="white" opacity=".9"/>
+          <ellipse cx="50" cy="65" rx="22" ry="5" fill="white"/>
+          <!-- Arm extending to machine -->
+          <path d="M60 115 Q65 112 70 115" stroke="#3D2B1F" stroke-width="8" stroke-linecap="round" fill="none"/>
+        </svg>
       </div>
-      <div class="w-full md:w-1/2">
-        <h2 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Nuestra Historia Amigable</h2>
-        <p class="text-base md:text-lg font-body text-on-surface-variant mb-6 leading-relaxed">
-          Capibara Café nació de la idea de crear un espacio donde el tiempo parece detenerse. Inspirados en la naturaleza relajada de los capibaras, diseñamos cada rincón para ofrecerte paz y buena vibra.
+      <div class="p-8">
+        <h3 class="font-extrabold text-2xl mb-3" style="color:var(--brown);">Café de Especialidad</h3>
+        <p class="font-medium mb-6 leading-relaxed" style="color:#6B4F3A;">Granos seleccionados tostados con amor. Espresso, lattes, cappuccinos y nuestro signature "Latte Capibara".</p>
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-xl" style="color:var(--orange);">Desde S/ 8</span>
+          <a href="#contact" class="font-bold text-sm px-5 py-2.5 rounded-full text-white transition hover:opacity-90" style="background:var(--orange);">Pedir</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Postres (elevated) -->
+    <div class="card reveal rounded-3xl overflow-hidden md:-translate-y-6" style="background:var(--sand);transition-delay:.15s;">
+      <div class="flex items-center justify-center py-10" style="background:rgba(74,124,89,.08);">
+        <svg width="160" height="150" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Table -->
+          <ellipse cx="100" cy="160" rx="55" ry="8" fill="#C49A6C" opacity=".4"/>
+          <!-- Cake plate -->
+          <ellipse cx="100" cy="148" rx="40" ry="7" fill="#ddd" opacity=".8"/>
+          <!-- Cake layers -->
+          <rect x="70" y="112" width="60" height="38" rx="4" fill="#E8732A" opacity=".8"/>
+          <rect x="68" y="108" width="64" height="12" rx="3" fill="#C85A10" opacity=".7"/>
+          <rect x="66" y="104" width="68" height="10" rx="3" fill="white" opacity=".9"/>
+          <!-- Frosting drips -->
+          <path d="M72 104 Q72 98 76 98 Q80 98 80 104" fill="white" opacity=".8"/>
+          <path d="M88 104 Q88 96 92 96 Q96 96 96 104" fill="white" opacity=".8"/>
+          <path d="M108 104 Q108 98 112 98 Q116 98 116 104" fill="white" opacity=".8"/>
+          <!-- Cherry on top -->
+          <circle cx="100" cy="94" r="6" fill="#E8732A"/>
+          <path d="M100 88 Q102 80 108 78" stroke="#4A7C59" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Fork -->
+          <rect x="136" y="105" width="4" height="30" rx="2" fill="#C49A6C"/>
+          <path d="M133 105 L133 115 Q137 118 141 115 L141 105" fill="#C49A6C"/>
+          <!-- Capybara -->
+          <ellipse cx="62" cy="128" rx="24" ry="16" fill="#3D2B1F"/>
+          <rect x="42" y="100" width="42" height="32" rx="16" fill="#3D2B1F"/>
+          <ellipse cx="54" cy="94"  rx="9"  ry="6"   fill="#3D2B1F"/>
+          <circle cx="72" cy="110" r="6"   fill="white"/>
+          <circle cx="73" cy="111" r="3"   fill="#1a0a00"/>
+          <circle cx="74" cy="109" r="1.2" fill="white"/>
+          <rect x="74" y="117" width="16" height="11" rx="5.5" fill="#5B3A2A"/>
+          <circle cx="79" cy="122" r="1.6" fill="#1a0a00"/>
+          <circle cx="85" cy="122" r="1.6" fill="#1a0a00"/>
+          <!-- Happy expression -->
+          <path d="M79 127 Q82 131 85 127" stroke="#1a0a00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- Arm reaching for cake -->
+          <path d="M82 128 Q88 122 96 120" stroke="#3D2B1F" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <!-- Star sparkles -->
+          <path d="M148 90 L150 84 L152 90 L158 92 L152 94 L150 100 L148 94 L142 92Z" fill="#E8732A" opacity=".5"/>
+          <path d="M30 85  L31 80 L32 85 L37 87 L32 89 L31 94 L30 89 L25 87Z" fill="#4A7C59" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="p-8">
+        <div class="inline-block font-bold text-xs px-3 py-1 rounded-full mb-3" style="background:rgba(232,115,42,.15);color:var(--orange);">⭐ Más pedido</div>
+        <h3 class="font-extrabold text-2xl mb-3" style="color:var(--brown);">Postres Caseros</h3>
+        <p class="font-medium mb-6 leading-relaxed" style="color:#6B4F3A;">Tartas, galletas y bizcochos horneados cada mañana. El acompañamiento perfecto para tu pausa.</p>
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-xl" style="color:var(--orange);">Desde S/ 12</span>
+          <a href="#contact" class="font-bold text-sm px-5 py-2.5 rounded-full text-white transition hover:opacity-90" style="background:var(--orange);">Pedir</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Bebidas frías -->
+    <div class="card reveal rounded-3xl overflow-hidden" style="background:var(--sand);transition-delay:.25s;">
+      <div class="flex items-center justify-center py-10" style="background:rgba(74,124,89,.07);">
+        <svg width="160" height="150" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Big cold drink glass -->
+          <path d="M80 60 L70 160 L130 160 L120 60Z" fill="rgba(74,124,89,.15)" stroke="#4A7C59" stroke-width="2"/>
+          <!-- Ice cubes -->
+          <rect x="88"  y="120" width="18" height="18" rx="4" fill="white" opacity=".7"/>
+          <rect x="102" y="108" width="16" height="16" rx="4" fill="white" opacity=".6"/>
+          <rect x="85"  y="100" width="14" height="14" rx="4" fill="white" opacity=".5"/>
+          <!-- Drink color (matcha) -->
+          <path d="M85 140 L74 158 L126 158 L115 140Z" fill="#5B8A5F" opacity=".5"/>
+          <!-- Straw -->
+          <rect x="96" y="30" width="6" height="135" rx="3" fill="#E8732A"/>
+          <!-- Umbrella -->
+          <path d="M72 48 Q99 25 126 48Z" fill="#E8732A" opacity=".8"/>
+          <line x1="99" y1="25" x2="99" y2="48" stroke="#C85A10" stroke-width="1.5"/>
+          <!-- Cherry -->
+          <circle cx="90" cy="58" r="5" fill="#E8732A"/>
+          <path d="M90 53 Q93 46 98 44" stroke="#4A7C59" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <!-- Capybara drinking -->
+          <ellipse cx="155" cy="135" rx="28" ry="18" fill="#3D2B1F"/>
+          <rect x="134" y="104" width="46" height="36" rx="17" fill="#3D2B1F"/>
+          <ellipse cx="148" cy="98" rx="9" ry="6" fill="#3D2B1F"/>
+          <circle cx="165" cy="116" r="6"   fill="white"/>
+          <circle cx="166" cy="117" r="3"   fill="#1a0a00"/>
+          <circle cx="167" cy="115" r="1.2" fill="white"/>
+          <rect x="167" y="123" width="18" height="12" rx="6" fill="#5B3A2A"/>
+          <circle cx="172" cy="128" r="1.8" fill="#1a0a00"/>
+          <circle cx="179" cy="128" r="1.8" fill="#1a0a00"/>
+          <!-- Arm holding straw -->
+          <path d="M148 135 Q130 125 112 100" stroke="#3D2B1F" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <!-- Bubbles around -->
+          <circle cx="50"  cy="80"  r="5" fill="#4A7C59" opacity=".2"/>
+          <circle cx="44"  cy="62"  r="3" fill="#4A7C59" opacity=".15"/>
+          <circle cx="170" cy="70"  r="4" fill="#E8732A"  opacity=".2"/>
+          <circle cx="178" cy="55"  r="2.5" fill="#E8732A" opacity=".15"/>
+        </svg>
+      </div>
+      <div class="p-8">
+        <h3 class="font-extrabold text-2xl mb-3" style="color:var(--brown);">Bebidas Refrescantes</h3>
+        <p class="font-medium mb-6 leading-relaxed" style="color:#6B4F3A;">Tés fríos, limonadas artesanales, smoothies y frappés. Perfectos para los días soleados.</p>
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-xl" style="color:var(--orange);">Desde S/ 10</span>
+          <a href="#contact" class="font-bold text-sm px-5 py-2.5 rounded-full text-white transition hover:opacity-90" style="background:var(--orange);">Pedir</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ WAVE SEPARATOR ══ -->
+<div class="wave-sep" style="margin-top:-2px;">
+  <svg viewBox="0 0 1440 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,35 C240,70 480,0 720,35 C960,70 1200,0 1440,35 L1440,70 L0,70Z" fill="var(--sand)"/>
+  </svg>
+</div>
+
+
+<!-- ══ ABOUT ══ -->
+<section id="about" style="background:var(--sand);padding:5rem 1.5rem;">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-14 md:gap-20">
+
+    <!-- Illustration -->
+    <div class="flex-1 reveal flex justify-center">
+      <div style="position:relative;max-width:420px;width:100%;">
+        <!-- Background circle -->
+        <div style="position:absolute;inset:-20px;border-radius:50%;background:rgba(232,115,42,.08);"></div>
+        <svg viewBox="0 0 360 300" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:relative;z-index:1;">
+          <!-- Table -->
+          <ellipse cx="180" cy="270" rx="130" ry="16" fill="#C49A6C" opacity=".3"/>
+          <rect x="80" y="255" width="200" height="16" rx="8" fill="#C49A6C" opacity=".4"/>
+          <!-- Table top oval -->
+          <ellipse cx="180" cy="248" rx="135" ry="18" fill="#D4AA80" opacity=".5"/>
+
+          <!-- 2 cups on table -->
+          <!-- Cup left -->
+          <rect x="90"  y="212" width="44" height="30" rx="7" fill="#E8732A" opacity=".85"/>
+          <rect x="88"  y="206" width="48" height="10" rx="5" fill="#C85A10" opacity=".8"/>
+          <path d="M134 216 Q146 216 146 228 Q146 240 134 240" stroke="#C85A10" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- Steam left cup -->
+          <path class="s1" d="M102 205 Q99 196 102 187 Q105 178 102 169" stroke="#E8732A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".7"/>
+          <path class="s2" d="M112 205 Q109 196 112 187 Q115 178 112 169" stroke="#E8732A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".5"/>
+
+          <!-- Cup right -->
+          <rect x="224" y="215" width="44" height="28" rx="7" fill="#5B3A2A" opacity=".8"/>
+          <rect x="222" y="209" width="48" height="10" rx="5" fill="#3D2B1F" opacity=".8"/>
+          <path d="M222 219 Q210 219 210 230 Q210 241 222 241" stroke="#3D2B1F" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- Steam right cup -->
+          <path class="s2" d="M236 208 Q233 199 236 190 Q239 181 236 172" stroke="#5B3A2A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".6"/>
+          <path class="s3" d="M246 208 Q243 199 246 190 Q249 181 246 172" stroke="#5B3A2A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".4"/>
+
+          <!-- Capybara 1 (left, sitting at table) -->
+          <ellipse cx="112" cy="210" rx="50" ry="32" fill="#3D2B1F"/>
+          <rect x="74"  y="155" width="68" height="56" rx="26" fill="#3D2B1F"/>
+          <ellipse cx="90" cy="146" rx="13" ry="9"  fill="#3D2B1F"/>
+          <ellipse cx="90" cy="148" rx="7"  ry="5"  fill="#5B3A2A"/>
+          <!-- Eye 1 -->
+          <circle cx="128" cy="170" r="8"   fill="white"/>
+          <circle cx="130" cy="172" r="4"   fill="#1a0a00"/>
+          <circle cx="132" cy="169" r="1.8" fill="white"/>
+          <!-- Muzzle 1 -->
+          <rect x="132" y="180" width="22" height="15" rx="7.5" fill="#5B3A2A"/>
+          <circle cx="138" cy="187" r="2.5" fill="#1a0a00"/>
+          <circle cx="147" cy="187" r="2.5" fill="#1a0a00"/>
+          <path d="M138 193 Q142.5 197 147 193" stroke="#1a0a00" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+          <!-- Capybara 2 (right, sitting at table) -->
+          <ellipse cx="250" cy="212" rx="48" ry="30" fill="#5B3A2A"/>
+          <rect x="214" y="158" width="66" height="56" rx="25" fill="#5B3A2A"/>
+          <ellipse cx="268" cy="148" rx="13" ry="9" fill="#5B3A2A"/>
+          <ellipse cx="268" cy="150" rx="7"  ry="5" fill="#3D2B1F"/>
+          <!-- Eye 2 -->
+          <circle cx="222" cy="172" r="8"   fill="white"/>
+          <circle cx="224" cy="174" r="4"   fill="#1a0a00"/>
+          <circle cx="226" cy="171" r="1.8" fill="white"/>
+          <!-- Muzzle 2 -->
+          <rect x="206" y="182" width="22" height="15" rx="7.5" fill="#3D2B1F"/>
+          <circle cx="212" cy="189" r="2.5" fill="#1a0a00"/>
+          <circle cx="221" cy="189" r="2.5" fill="#1a0a00"/>
+          <path d="M212 195 Q216.5 199 221 195" stroke="#1a0a00" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+          <!-- Heart between them -->
+          <path d="M180 160 Q180 148 170 148 Q160 148 160 158 Q160 168 180 180 Q200 168 200 158 Q200 148 190 148 Q180 148 180 160Z" fill="#E8732A" opacity=".7"/>
+
+          <!-- Decorative leaves on sides -->
+          <path d="M20 230 Q10 190 22 160 Q34 130 20 100" fill="none" stroke="#4A7C59" stroke-width="12" stroke-linecap="round" opacity=".4"/>
+          <path d="M340 220 Q350 180 338 150 Q326 120 340 90" fill="none" stroke="#4A7C59" stroke-width="10" stroke-linecap="round" opacity=".3"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="flex-1">
+      <div class="reveal">
+        <span class="inline-block font-semibold text-sm px-4 py-1.5 rounded-full mb-4" style="background:rgba(232,115,42,.12);color:var(--orange);">Nuestra Historia</span>
+        <h2 class="font-extrabold mb-6" style="font-size:clamp(1.8rem,4vw,2.8rem);color:var(--brown);">Un lugar donde el tiempo <span style="color:var(--orange);">se detiene</span></h2>
+        <p class="font-medium text-lg mb-5 leading-relaxed" style="color:#6B4F3A;">
+          Capibara Café nació de la idea de crear un refugio urbano. Inspirados en la naturaleza relajada de los capibaras, diseñamos cada rincón para ofrecerte paz, buena música y café honesto.
         </p>
-        <p class="text-base md:text-lg font-body text-on-surface-variant leading-relaxed">
-          Creemos en las conexiones reales, el café honesto y los momentos compartidos. Nuestro oasis urbano está aquí para que te desconectes del bullicio y disfrutes de lo simple.
+        <p class="font-medium text-lg mb-8 leading-relaxed" style="color:#6B4F3A;">
+          Creemos en las conexiones reales y los momentos compartidos. Nuestro oasis está aquí para que te desconectes del bullicio y disfrutes de lo simple con las personas que importan.
         </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Galería -->
-  <section class="py-16 md:py-24 px-6 md:px-8 max-w-7xl mx-auto">
-    <h2 class="text-3xl md:text-4xl font-headline font-bold text-primary text-center mb-12 md:mb-16">Oasis en Imágenes</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <img alt="Capibara leyendo" class="gallery-img w-full h-48 md:h-64 object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-Y7sntcvwDPPdPSlTTxas_Q4eNJFdUc9n0k6fdrnukiF5KclsE_gW7IGR37CdiPa42d6KyuVVKiqbdCEQqrAeaKz0WUHUPIf_5Rbng4RDXLO9aXO-QNnWFccCMRiiSGlY8Uujg1y1zSaJfF17OOCTN5M5RLS1zSHvV_u0g760rLjDPHm-hZ7_6yCFHEOi2LV0Tfdnclzh45HOYv4jCKtAkQmoyNONNKLnyf44xEqJVhnP3I-Js_udQjWNEzCThy3P9gt8NkXdL3Q"/>
-      <img alt="Capibara con plantas" class="gallery-img w-full h-48 md:h-64 object-cover rounded-xl md:translate-y-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkzSL4zMaGs8mO39LWpYO5IK7V_SVJGUEmmJYZkfQ2r6aB4z_AQIIR1HNYZ7IN-yz0Gno61NsXOSWUCkRh1VfFjL2JrPGnO5dw1roiq8yA2i0yJjVHEr-zbOOMzBsx7U23H7GkNBRVA75ObGzm9X9bpMNsWN2M66l6ttOg3FiTHMPnqmzbMstV8qnFWqFQCjt9cowgxiUCaUNhVbZxZGpUzOWL6CdyCFkXcMSqwJtGhLGEPbO2ueMukkDYJiBR-tZsrEp0mlVZEgA"/>
-      <img alt="Capibara con postre" class="gallery-img w-full h-48 md:h-64 object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMDqoLJpItw3wK2CEeKih_wt9m19enMoDMDasuha_BdP20wXNHaHJ3kh89TP7I0u-mkhBXIS3BQZ0Bi0N_Oj8oWJqAZqykALDW_OegKFC0SI3j5Ka5_13O3o7JXALDtV-Hwvn2BK3a-DhA0bvaBisgnSf-u0p0LO95gPYGypabyIF6SKbNFlPG0CRNp6AVOzvuqVaucrC5nxr1yLahUpkQ0LLAoUl8kGeM2eqUB7Auz4G3-067li_JG0Ufmol3lI1qhZWfLb3JUDw"/>
-      <img alt="Capibara en ventana" class="gallery-img w-full h-48 md:h-64 object-cover rounded-xl md:translate-y-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMsna5f2W1LocM11NHIo9FNuNoXI54yczKTgibaVVOYSomOg1zQo8g8AiaC8IpM6PqnYInyTXeQJlShi88Jbq1bUG6p3p9_nb2AIPyDhiYEbbD5hlND3CjhbbbwtvlXs-ec4Xw9b2ENXgrkQmahhm8bqwQjuN1H3u5U_sb8bSOsPDsC6zFtOOzKtEzutD2hvrX_IStCA6giMOEjP98XXDpNb4HMMA0VB33P4KxyOZE8W_CnECk-0WOl1pFqIFT6a6UgEYqHogb2Ks"/>
-    </div>
-  </section>
-
-  <!-- Contacto -->
-  <section class="py-16 md:py-24 px-6 md:px-8 max-w-7xl mx-auto" id="contacto">
-    <div class="bg-surface-container-high rounded-2xl p-8 md:p-12 ambient-shadow flex flex-col lg:flex-row gap-10 md:gap-16">
-      <div class="w-full lg:w-1/2">
-        <h2 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-8">Ven a Visitarnos</h2>
-        <form class="space-y-6" onsubmit="handleSubmit(event)">
-          <div>
-            <label class="block text-sm font-label text-on-surface-variant mb-2" for="nombre">Tu Nombre</label>
-            <input id="nombre" class="w-full bg-surface-container-highest border-none rounded-lg p-4 focus:ring-2 focus:ring-primary/30 outline-none text-on-surface placeholder-on-surface-variant/50 transition" placeholder="¿Cómo te llamas?" type="text" required/>
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-6">
+          <div class="text-center p-4 rounded-2xl" style="background:rgba(232,115,42,.08);">
+            <div class="font-extrabold text-2xl" style="color:var(--orange);">5+</div>
+            <div class="font-medium text-sm mt-1" style="color:#6B4F3A;">Años de amor</div>
           </div>
-          <div>
-            <label class="block text-sm font-label text-on-surface-variant mb-2" for="mensaje">Mensaje</label>
-            <textarea id="mensaje" class="w-full bg-surface-container-highest border-none rounded-lg p-4 h-32 focus:ring-2 focus:ring-primary/30 outline-none text-on-surface placeholder-on-surface-variant/50 transition resize-none" placeholder="Escríbenos algo lindo..." required></textarea>
+          <div class="text-center p-4 rounded-2xl" style="background:rgba(74,124,89,.08);">
+            <div class="font-extrabold text-2xl" style="color:var(--green);">20+</div>
+            <div class="font-medium text-sm mt-1" style="color:#6B4F3A;">Variedades</div>
           </div>
-          <button class="bg-primary text-on-primary font-bold py-3 px-8 rounded-full hover:bg-orange-800 hover:scale-105 transition-all duration-200 w-full md:w-auto" type="submit">
-            Enviar Mensaje
-          </button>
-          <p id="form-msg" class="text-green-700 font-semibold hidden">¡Mensaje enviado! Te respondemos pronto ☕</p>
-        </form>
-      </div>
-      <div class="w-full lg:w-1/2 min-h-[300px] md:h-96 bg-surface-container-highest rounded-xl overflow-hidden relative">
-        <iframe
-          src="https://www.google.com/maps?q=Buenos+Aires,+Argentina&output=embed"
-          width="100%" height="100%"
-          style="border:0; min-height:300px;"
-          allowfullscreen="" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          class="w-full h-full absolute inset-0">
-        </iframe>
+          <div class="text-center p-4 rounded-2xl" style="background:rgba(61,43,31,.06);">
+            <div class="font-extrabold text-2xl" style="color:var(--brown);">100%</div>
+            <div class="font-medium text-sm mt-1" style="color:#6B4F3A;">Casero</div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-</main>
 
-<!-- Footer -->
-<footer class="w-full bg-stone-100 rounded-t-3xl mt-16 px-8 md:px-12 py-12">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-sm">
-    <div class="flex items-center gap-3">
-      <img alt="Capibara Logo" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uitBCxOl8RKv3Jr_pUr1Y7gXctwIS44jWipdi735MOU9iOW8TidT4Ri9AkLaPMhqgakI9n9K9C5WwcInh5kEaMYiIUjrNFDrybIcSL_-UzxyWAeWQblrBAXAApFvqDA43dFzoo7IjPot4DCb7GJKqw2MOarBpO7ecMrxKXBi-ZsXuLTEwt7WwtkJg_3iEAnOQKmzY5sLCaYFiPxFGU04rDT2_qRSgAi0QsyAYltxjU5x4-NH0Wha8fPUw"/>
-      <span class="text-lg font-bold text-orange-900">Capibara Café Amigable</span>
+<!-- ══ WAVE SEPARATOR 2 ══ -->
+<div class="wave-sep" style="background:var(--sand);">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 C360,60 1080,0 1440,60 L1440,60 L0,60Z" fill="var(--cream)"/>
+  </svg>
+</div>
+
+
+<!-- ══ GALLERY ══ -->
+<section id="gallery" style="background:var(--cream);padding:5rem 1.5rem;">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <span class="inline-block font-semibold text-sm px-4 py-1.5 rounded-full mb-4" style="background:rgba(74,124,89,.1);color:var(--green);">Galería</span>
+      <h2 class="font-extrabold" style="font-size:clamp(2rem,5vw,3rem);color:var(--brown);">Nuestro <span style="color:var(--orange);">oasis</span></h2>
     </div>
-    <p class="text-stone-500">© 2024 Capibara Café Amigable. Siente el relax de la naturaleza.</p>
-    <div class="flex gap-6">
-      <a class="text-stone-500 hover:text-orange-700 hover:underline transition-all duration-200" href="#">Instagram</a>
-      <a class="text-stone-500 hover:text-orange-700 hover:underline transition-all duration-200" href="#">Facebook</a>
-      <a class="text-stone-500 hover:text-orange-700 hover:underline transition-all duration-200" href="#">TikTok</a>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[180px] md:auto-rows-[200px]">
+
+      <!-- Big item -->
+      <div class="gal-item reveal col-span-2 row-span-2" style="background:linear-gradient(135deg,#F5E6D3,#E8F5EB);transition-delay:.05s;">
+        <svg viewBox="0 0 400 360" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;padding:1.5rem;">
+          <!-- Hammock / relaxing capybara -->
+          <path d="M60 200 Q200 260 340 200" stroke="#C49A6C" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M60 200 Q200 280 340 200" fill="rgba(196,154,108,.2)"/>
+          <!-- Ropes -->
+          <line x1="60"  y1="200" x2="60"  y2="140" stroke="#C49A6C" stroke-width="4"/>
+          <line x1="340" y1="200" x2="340" y2="140" stroke="#C49A6C" stroke-width="4"/>
+          <!-- Trees/poles -->
+          <rect x="50"  y="100" width="20" height="240" rx="6" fill="#5B3A2A" opacity=".5"/>
+          <rect x="330" y="100" width="20" height="240" rx="6" fill="#5B3A2A" opacity=".5"/>
+          <!-- Leaves on trees -->
+          <circle cx="60"  cy="100" r="36" fill="#4A7C59" opacity=".5"/>
+          <circle cx="340" cy="100" r="36" fill="#4A7C59" opacity=".5"/>
+          <!-- Capybara in hammock -->
+          <ellipse cx="200" cy="225" rx="80" ry="28" fill="#3D2B1F"/>
+          <rect x="148" y="185" width="60" height="45" rx="22" fill="#3D2B1F"/>
+          <ellipse cx="162" cy="178" rx="12" ry="8" fill="#3D2B1F"/>
+          <circle cx="196" cy="200" r="9"   fill="white"/>
+          <circle cx="198" cy="202" r="4.5" fill="#1a0a00"/>
+          <circle cx="200" cy="199" r="2"   fill="white"/>
+          <rect x="198" y="208" width="22" height="14" rx="7" fill="#5B3A2A"/>
+          <circle cx="204" cy="214" r="2.2" fill="#1a0a00"/>
+          <circle cx="213" cy="214" r="2.2" fill="#1a0a00"/>
+          <path d="M204 220 Q208.5 225 213 220" stroke="#1a0a00" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Coffee cup on belly -->
+          <rect x="188" y="218" width="26" height="18" rx="5" fill="#E8732A" opacity=".9"/>
+          <rect x="186" y="213" width="30" height="8"  rx="4" fill="#C85A10"/>
+          <path class="s1" d="M196 212 Q193 204 196 197" stroke="#E8732A" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>
+          <path class="s2" d="M202 212 Q199 204 202 197" stroke="#E8732A" stroke-width="2" fill="none" stroke-linecap="round" opacity=".5"/>
+          <!-- Stars/Zzz -->
+          <text x="256" y="192" font-size="22" fill="#E8732A" opacity=".5" font-weight="bold">z</text>
+          <text x="270" y="172" font-size="18" fill="#E8732A" opacity=".4" font-weight="bold">z</text>
+          <text x="282" y="155" font-size="14" fill="#E8732A" opacity=".3" font-weight="bold">z</text>
+        </svg>
+      </div>
+
+      <!-- Item: capybara reading -->
+      <div class="gal-item reveal" style="background:linear-gradient(135deg,#FFF3E8,#F5E6D3);transition-delay:.1s;">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;padding:1rem;">
+          <ellipse cx="100" cy="155" rx="55" ry="22" fill="#3D2B1F"/>
+          <rect x="64"  cy="110" width="72" height="50" rx="25" fill="#3D2B1F" y="110"/>
+          <ellipse cx="80"  cy="105" rx="11" ry="7"  fill="#3D2B1F"/>
+          <circle cx="120" cy="126" r="8"   fill="white"/>
+          <circle cx="122" cy="128" r="4"   fill="#1a0a00"/>
+          <circle cx="124" cy="125" r="1.8" fill="white"/>
+          <rect x="123" y="134" width="20" height="13" rx="6.5" fill="#5B3A2A"/>
+          <circle cx="129" cy="140" r="2" fill="#1a0a00"/>
+          <circle cx="137" cy="140" r="2" fill="#1a0a00"/>
+          <!-- Book -->
+          <rect x="54" y="128" width="44" height="32" rx="3" fill="#E8732A" opacity=".9"/>
+          <rect x="74" y="128" width="3"  height="32" fill="#C85A10"/>
+          <line x1="60" y1="136" x2="72" y2="136" stroke="white" stroke-width="1.5" opacity=".6"/>
+          <line x1="60" y1="142" x2="72" y2="142" stroke="white" stroke-width="1.5" opacity=".4"/>
+          <line x1="60" y1="148" x2="72" y2="148" stroke="white" stroke-width="1.5" opacity=".3"/>
+          <!-- Arm holding book -->
+          <path d="M88 145 Q82 138 75 140" stroke="#3D2B1F" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <!-- Reading glasses -->
+          <circle cx="111" cy="120" r="5"   fill="none" stroke="#C49A6C" stroke-width="2" opacity=".7"/>
+          <circle cx="122" cy="119" r="5"   fill="none" stroke="#C49A6C" stroke-width="2" opacity=".7"/>
+          <line x1="116" y1="119" x2="117" y2="120" stroke="#C49A6C" stroke-width="2"/>
+          <line x1="127" y1="119" x2="134" y2="117" stroke="#C49A6C" stroke-width="2" opacity=".5"/>
+        </svg>
+      </div>
+
+      <!-- Item: plants & capybara -->
+      <div class="gal-item reveal" style="background:linear-gradient(135deg,#E8F5EB,#d8f0db);transition-delay:.15s;">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;padding:1rem;">
+          <!-- Many leaves -->
+          <path d="M100 190 Q70 150 80 100 Q90 60 100 70 Q110 60 120 100 Q130 150 100 190Z" fill="#4A7C59" opacity=".6"/>
+          <path d="M100 190 Q130 155 140 110 Q150 70 130 80 Q120 82 110 110 Q105 140 100 190Z" fill="#5B8A5F" opacity=".5"/>
+          <path d="M100 190 Q70 155 60 110 Q50 70 70 80 Q80 82 90 110 Q95 140 100 190Z" fill="#4A7C59" opacity=".5"/>
+          <!-- Pot -->
+          <path d="M72 180 L78 200 L122 200 L128 180Z" fill="#C49A6C"/>
+          <ellipse cx="100" cy="180" rx="28" ry="8" fill="#B08050"/>
+          <!-- Tiny capybara peeking from behind plant -->
+          <circle cx="148" cy="130" r="18" fill="#3D2B1F"/>
+          <ellipse cx="155" cy="120" rx="8" ry="5" fill="#3D2B1F"/>
+          <circle cx="162" cy="127" r="5"   fill="white"/>
+          <circle cx="163" cy="128" r="2.5" fill="#1a0a00"/>
+          <rect x="162" y="133" width="12" height="8" rx="4" fill="#5B3A2A"/>
+        </svg>
+      </div>
+
+      <!-- Item: rain window -->
+      <div class="gal-item reveal" style="background:linear-gradient(135deg,#e8eef8,#d0ddef);transition-delay:.2s;">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;padding:.5rem;">
+          <!-- Window frame -->
+          <rect x="20" y="20" width="160" height="160" rx="12" fill="rgba(255,255,255,.6)" stroke="#C49A6C" stroke-width="4"/>
+          <line x1="100" y1="20" x2="100" y2="180" stroke="#C49A6C" stroke-width="3"/>
+          <line x1="20"  y1="100" x2="180" y2="100" stroke="#C49A6C" stroke-width="3"/>
+          <!-- Rain drops -->
+          <ellipse cx="50"  cy="50"  rx="2" ry="5" fill="#93C5FD" opacity=".7"/>
+          <ellipse cx="70"  cy="35"  rx="2" ry="5" fill="#93C5FD" opacity=".6"/>
+          <ellipse cx="40"  cy="70"  rx="2" ry="5" fill="#93C5FD" opacity=".5"/>
+          <ellipse cx="140" cy="45"  rx="2" ry="5" fill="#93C5FD" opacity=".7"/>
+          <ellipse cx="160" cy="65"  rx="2" ry="5" fill="#93C5FD" opacity=".5"/>
+          <ellipse cx="130" cy="30"  rx="2" ry="5" fill="#93C5FD" opacity=".6"/>
+          <!-- Capybara at window -->
+          <ellipse cx="100" cy="155" rx="50" ry="20" fill="#3D2B1F"/>
+          <rect x="68"  y="118" width="64" height="44" rx="24" fill="#3D2B1F"/>
+          <ellipse cx="80" cy="112" rx="11" ry="7" fill="#3D2B1F"/>
+          <circle cx="118" cy="132" r="7"   fill="white"/>
+          <circle cx="120" cy="134" r="3.5" fill="#1a0a00"/>
+          <circle cx="121" cy="131" r="1.5" fill="white"/>
+          <rect x="120" y="140" width="18" height="12" rx="6" fill="#5B3A2A"/>
+          <circle cx="125" cy="145" r="2" fill="#1a0a00"/>
+          <circle cx="132" cy="145" r="2" fill="#1a0a00"/>
+          <!-- Warm drink inside -->
+          <rect x="78"  y="140" width="28" height="20" rx="5" fill="#E8732A" opacity=".8"/>
+          <rect x="76"  y="135" width="32" height="8"  rx="4" fill="#C85A10"/>
+          <path class="s1" d="M86 134 Q83 126 86 119" stroke="#E8732A" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+          <path class="s2" d="M92 134 Q89 126 92 119" stroke="#E8732A" stroke-width="2" fill="none" stroke-linecap="round" opacity=".4"/>
+        </svg>
+      </div>
+
+      <!-- Item: sunrise capybara -->
+      <div class="gal-item reveal" style="background:linear-gradient(180deg,#FFE4B0,#F5E6D3);transition-delay:.25s;">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;padding:.75rem;">
+          <!-- Sunrise -->
+          <circle cx="100" cy="120" r="50" fill="#FFB347" opacity=".3"/>
+          <circle cx="100" cy="120" r="35" fill="#FFB347" opacity=".4"/>
+          <!-- Sun rays -->
+          <line x1="100" y1="62"  x2="100" y2="50"  stroke="#FFB347" stroke-width="3" stroke-linecap="round"/>
+          <line x1="138" y1="82"  x2="146" y2="74"  stroke="#FFB347" stroke-width="3" stroke-linecap="round"/>
+          <line x1="62"  y1="82"  x2="54"  y2="74"  stroke="#FFB347" stroke-width="3" stroke-linecap="round"/>
+          <line x1="150" y1="120" x2="162" y2="120" stroke="#FFB347" stroke-width="3" stroke-linecap="round"/>
+          <line x1="50"  y1="120" x2="38"  y2="120" stroke="#FFB347" stroke-width="3" stroke-linecap="round"/>
+          <!-- Ground -->
+          <ellipse cx="100" cy="175" rx="80" ry="15" fill="#4A7C59" opacity=".3"/>
+          <!-- Capybara silhouette -->
+          <ellipse cx="100" cy="170" rx="52" ry="22" fill="#3D2B1F"/>
+          <rect x="68"  y="135" width="64" height="42" rx="25" fill="#3D2B1F"/>
+          <ellipse cx="80" cy="130" rx="11" ry="7" fill="#3D2B1F"/>
+          <!-- Happy eyes -->
+          <path d="M112 146 Q118 141 124 146" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M112 148 Q118 143 124 148" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Muzzle -->
+          <rect x="118" y="152" width="18" height="12" rx="6" fill="#5B3A2A"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ CONTACT ══ -->
+<section id="contact" style="background:var(--cream);padding:5rem 1.5rem;">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <span class="inline-block font-semibold text-sm px-4 py-1.5 rounded-full mb-4" style="background:rgba(232,115,42,.12);color:var(--orange);">Contacto</span>
+      <h2 class="font-extrabold" style="font-size:clamp(2rem,5vw,3rem);color:var(--brown);">Ven a <span style="color:var(--orange);">visitarnos</span></h2>
+      <p class="mt-4 font-medium" style="color:#6B4F3A;max-width:400px;margin:1rem auto 0;">Estamos esperándote con café caliente y una sonrisa capibara.</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-10 items-stretch">
+
+      <!-- Info + Form -->
+      <div class="flex-1 reveal">
+        <div class="rounded-3xl p-8 md:p-10 h-full" style="background:var(--sand);">
+          <!-- Info -->
+          <div class="flex flex-col gap-5 mb-10">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl" style="background:rgba(232,115,42,.12);">📍</div>
+              <div>
+                <div class="font-bold" style="color:var(--brown);">Dirección</div>
+                <div class="font-medium" style="color:#6B4F3A;">Pasaje Tranquilo 123, Arequipa</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl" style="background:rgba(232,115,42,.12);">🕐</div>
+              <div>
+                <div class="font-bold" style="color:var(--brown);">Horario</div>
+                <div class="font-medium" style="color:#6B4F3A;">Lun–Sáb 8:00 – 8:00 pm · Dom 9:00 – 6:00 pm</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl" style="background:rgba(232,115,42,.12);">📱</div>
+              <div>
+                <div class="font-bold" style="color:var(--brown);">WhatsApp</div>
+                <div class="font-medium" style="color:#6B4F3A;">+51 999 000 000</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form onsubmit="handleForm(event)" class="flex flex-col gap-5">
+            <div>
+              <label class="block font-semibold text-sm mb-2" style="color:var(--brown);" for="name">Tu nombre</label>
+              <input id="name" type="text" placeholder="¿Cómo te llamas?" required/>
+            </div>
+            <div>
+              <label class="block font-semibold text-sm mb-2" style="color:var(--brown);" for="email">Correo electrónico</label>
+              <input id="email" type="email" placeholder="tu@correo.com" required/>
+            </div>
+            <div>
+              <label class="block font-semibold text-sm mb-2" style="color:var(--brown);" for="msg">Mensaje</label>
+              <textarea id="msg" rows="4" placeholder="Escríbenos algo lindo... ☕" required></textarea>
+            </div>
+            <button type="submit" class="font-bold py-4 rounded-full text-white transition-all hover:scale-105 hover:opacity-90" style="background:var(--orange);">
+              Enviar mensaje 🐹
+            </button>
+            <p id="form-ok" class="hidden font-semibold text-center" style="color:var(--green);">¡Gracias! Te respondemos muy pronto ☕</p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="flex-1 reveal" style="transition-delay:.15s;">
+        <div class="rounded-3xl overflow-hidden h-full" style="min-height:420px;border:3px solid var(--sand);">
+          <iframe
+            src="https://www.google.com/maps?q=Arequipa,Peru&output=embed"
+            width="100%" height="100%"
+            style="border:0;display:block;min-height:420px;"
+            allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ FOOTER ══ -->
+<footer style="background:var(--brown);padding:3.5rem 1.5rem 2rem;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-10">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <svg width="44" height="38" viewBox="0 0 130 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="s1" d="M22 52 Q18 43 22 35 Q26 27 22 18" stroke="#E8732A" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+          <path class="s2" d="M30 52 Q26 43 30 35 Q34 27 30 18" stroke="#E8732A" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+          <rect x="10" y="54" width="34" height="24" rx="5" fill="#E8732A"/>
+          <rect x="8"  y="50" width="38" height="8"  rx="4" fill="#C85A10"/>
+          <path d="M44 58 Q55 58 55 67 Q55 76 44 76" stroke="#C85A10" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="82" cy="68" rx="42" ry="26" fill="rgba(255,248,240,.15)"/>
+          <ellipse cx="82" cy="68" rx="42" ry="26" fill="white" opacity=".12"/>
+          <rect x="48" y="228" width="16" height="14" rx="7" fill="white" opacity=".1"/>
+          <path d="M58 70 Q50 68 44 72" stroke="rgba(255,248,240,.2)" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <rect x="96" y="36" width="56" height="46" rx="18" fill="rgba(255,248,240,.15)"/>
+          <ellipse cx="112" cy="30" rx="10" ry="7" fill="rgba(255,248,240,.12)"/>
+          <circle cx="136" cy="52" r="5" fill="white" opacity=".9"/>
+          <circle cx="137" cy="53" r="2.5" fill="var(--brown)"/>
+          <circle cx="138" cy="51" r="1.2" fill="white"/>
+          <rect x="144" y="56" width="20" height="14" rx="7" fill="rgba(255,248,240,.08)"/>
+        </svg>
+        <div>
+          <div class="font-extrabold italic text-xl" style="color:rgba(255,248,240,.95);">Capibara</div>
+          <div class="font-semibold text-xs" style="color:var(--orange);letter-spacing:.12em;text-transform:uppercase;">Café Amigable</div>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <div class="flex flex-wrap justify-center gap-8 font-semibold text-sm" style="color:rgba(255,248,240,.65);">
+        <a href="#"        class="hover:text-white transition-colors">Inicio</a>
+        <a href="#menu"    class="hover:text-white transition-colors">Menú</a>
+        <a href="#about"   class="hover:text-white transition-colors">Nosotros</a>
+        <a href="#gallery" class="hover:text-white transition-colors">Galería</a>
+        <a href="#contact" class="hover:text-white transition-colors">Contacto</a>
+      </div>
+
+      <!-- Socials -->
+      <div class="flex gap-4">
+        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all hover:scale-110" style="background:rgba(255,248,240,.12);color:rgba(255,248,240,.8);">IG</a>
+        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all hover:scale-110" style="background:rgba(255,248,240,.12);color:rgba(255,248,240,.8);">FB</a>
+        <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all hover:scale-110" style="background:rgba(255,248,240,.12);color:rgba(255,248,240,.8);">TK</a>
+      </div>
+    </div>
+
+    <!-- Decorative paw prints -->
+    <div class="flex justify-center gap-4 mb-6" style="opacity:.12;">
+      <svg width="24" height="24" viewBox="0 0 60 60" fill="var(--cream)"><ellipse cx="30" cy="38" rx="14" ry="11"/><ellipse cx="12" cy="24" rx="7" ry="5" transform="rotate(-20 12 24)"/><ellipse cx="48" cy="24" rx="7" ry="5" transform="rotate(20 48 24)"/><ellipse cx="20" cy="14" rx="5" ry="4"/><ellipse cx="40" cy="14" rx="5" ry="4"/></svg>
+      <svg width="20" height="20" viewBox="0 0 60 60" fill="var(--cream)"><ellipse cx="30" cy="38" rx="14" ry="11"/><ellipse cx="12" cy="24" rx="7" ry="5" transform="rotate(-20 12 24)"/><ellipse cx="48" cy="24" rx="7" ry="5" transform="rotate(20 48 24)"/><ellipse cx="20" cy="14" rx="5" ry="4"/><ellipse cx="40" cy="14" rx="5" ry="4"/></svg>
+      <svg width="16" height="16" viewBox="0 0 60 60" fill="var(--cream)"><ellipse cx="30" cy="38" rx="14" ry="11"/><ellipse cx="12" cy="24" rx="7" ry="5" transform="rotate(-20 12 24)"/><ellipse cx="48" cy="24" rx="7" ry="5" transform="rotate(20 48 24)"/><ellipse cx="20" cy="14" rx="5" ry="4"/><ellipse cx="40" cy="14" rx="5" ry="4"/></svg>
+    </div>
+
+    <div class="text-center font-medium text-sm border-t pt-6" style="color:rgba(255,248,240,.35);border-color:rgba(255,248,240,.1);">
+      © 2024 Capibara Café Amigable · Siente el relax de la naturaleza 🐹
     </div>
   </div>
 </footer>
 
-<script>
-  // Mobile menu
-  function openMobileMenu() {
-    document.getElementById('mobile-menu').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMobileMenu() {
-    document.getElementById('mobile-menu').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  document.getElementById('mobile-menu-close').addEventListener('click', closeMobileMenu);
 
-  // Nav shadow on scroll
-  const nav = document.getElementById('main-nav');
+<script>
+  // ── Mobile menu ──
+  function toggleMenu() {
+    const m = document.getElementById('mobile-menu');
+    m.classList.toggle('open');
+    document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+  }
+  document.getElementById('close-btn').addEventListener('click', toggleMenu);
+
+  // ── Nav shadow on scroll ──
+  const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('nav-scrolled', window.scrollY > 10);
+    nav.classList.toggle('scrolled', window.scrollY > 20);
   });
 
-  // Contact form
-  function handleSubmit(e) {
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Contact form ──
+  function handleForm(e) {
     e.preventDefault();
-    const nombre = document.getElementById('nombre').value.trim();
-    const mensaje = document.getElementById('mensaje').value.trim();
-    if (!nombre || !mensaje) return;
-    const msg = document.getElementById('form-msg');
-    msg.classList.remove('hidden');
+    const ok = document.getElementById('form-ok');
+    ok.classList.remove('hidden');
     e.target.reset();
-    setTimeout(() => msg.classList.add('hidden'), 5000);
+    setTimeout(() => ok.classList.add('hidden'), 5000);
   }
 </script>
 
